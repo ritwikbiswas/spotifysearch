@@ -66,11 +66,11 @@ st.title("Song Search")
 with st.sidebar:
     st.header("Search Parameters")
     with st.form("search_form"):
-        artist = st.text_input("Artist")
-        album = st.text_input("Album")
-        track = st.text_input("Track")
         genres = get_genres_from_csv()  # Load genres from CSV
         genre = st.selectbox("Genre", [''] + genres)  # Add the genres to the selectbox, prepend with empty string for optional selection
+        track = st.text_input("Track")
+        artist = st.text_input("Artist")
+        album = st.text_input("Album")
         years = list(range(1900, 2025))  # Example range from 1900 to current year
         year = st.selectbox("Year", [''] + years)  # Add years to the selectbox, prepend with empty string for optional selection
         tag = st.text_input("Tag")
@@ -102,4 +102,4 @@ if submitted:
     #     st.markdown(link, unsafe_allow_html=True)
 
 else:
-    st.success('Choose some parameters on the left to see tracks', icon="🎧")
+    st.success('Choose at least one parameter on the left to see results', icon="🎧")
