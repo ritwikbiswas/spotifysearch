@@ -60,7 +60,7 @@ def get_genres_from_csv(file_path='genres.csv'):
 # Streamlit UI
 st.set_page_config(page_icon="🎧", page_title="Music Search")
 
-st.title("Music Search")
+st.title("Song Search")
 
 # Sidebar for search form
 with st.sidebar:
@@ -79,15 +79,27 @@ with st.sidebar:
 if submitted:
     df_results = search_spotify(album=album, artist=artist, track=track, year=year, genre=genre, tag=tag)
     
-    # Display the DataFrame without the 'Spotify Link' column to avoid redundancy
-    st.dataframe(df_results.drop(columns=['Spotify Link']))
-    
-    # Display a header for the links section
-    st.subheader("Spotify Links")
-    
-    for index, row in df_results.iterrows():
-        link = f"[{row['Track Name']}]({row['Spotify Link']})"
-        st.markdown(link, unsafe_allow_html=True)
+    # # Display the DataFrame without the 'Spotify Link' column to avoid redundancy
+    # st.dataframe(df_results.drop(columns=['Spotify Link']))
+    # # Display a header for the links section
+    # st.subheader("Spotify Links")
+    df_results=df_results[['Track Name','Artist','Popularity','Spotify Link','Release Date','Album']]
+    st.dataframe(
+        df_results,
+        column_config={
+            "name": "Track",
+            "Popularity": st.column_config.NumberColumn(
+                "Popularity",
+                help="Popularity Ranking",
+                format="%d 🔥",
+            ),
+            "Spotify Link": st.column_config.LinkColumn("Spotify",display_text="Listen 🎧"),
+        },
+        hide_index=True,
+    )
+    # for index, row in df_results.iterrows():
+    #     link = f"[{row['Track Name']}]({row['Spotify Link']})"
+    #     st.markdown(link, unsafe_allow_html=True)
 
 else:
-    st.success('Choose some parameters on the left to see songs', icon="🎧")
+    st.success('Choose some parameters on the left to see tracks', icon="🎧")
