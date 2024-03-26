@@ -2,6 +2,7 @@ import streamlit as st
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import pandas as pd
+import plotly.express as px
 
 # Spotify API credentials - REPLACE WITH YOUR CREDENTIALS
 client_id = '23f5b5ae10874e0d9db993f3e9d532ec'
@@ -115,6 +116,25 @@ if submitted:
         },
         hide_index=True,
     )
+    # tab1, tab2,tab3 = st.tabs(["🧪 Vitals", "🐡 Energy","🔬 Acousticness"])
+    tab1,tab2 = st.tabs(["🔋 Juice","🫀 Vitals"])
+
+    with tab1:
+        fig2= px.scatter(df_results,y='danceability',x='energy',hover_name='Track Name',color_continuous_scale='viridis',title="Energy vs Danceability",color='tempo')
+        fig2.update_layout({
+            'plot_bgcolor': 'rgba(0,0,0,0)',
+            'paper_bgcolor': 'rgba(0,0,0,0)'
+        })
+        st.plotly_chart(fig2)
+        
+    with tab2:
+        fig1= px.scatter(df_results,y='key',x='tempo',hover_name='Track Name',color_continuous_scale='viridis',title="Tempo vs Key",color='loudness')
+        fig1.update_layout({
+            'plot_bgcolor': 'rgba(0,0,0,0)',
+            'paper_bgcolor': 'rgba(0,0,0,0)'
+        })
+        st.plotly_chart(fig1)
+
 
 
 else:
